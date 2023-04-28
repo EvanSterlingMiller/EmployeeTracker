@@ -15,3 +15,72 @@ connection.connect((error) => {
     console.log("Hello and welcome to the Travelers Employee Tracker")
     displayMenu()
 })
+
+// setting consts
+const showDepartments = () =>{
+    connection.query("SELECT * FROM department", (error, results)=>{
+        if (error) throw (error)
+        console.table(results)
+        displayMenu()
+    })
+}
+
+const showRoles = () =>{
+    connection.querry("SELECT * FROM role", (error, results)=>{
+        if (error) throw (error)
+        console.table(results)
+        displayMenu()
+    })
+}
+const showEmployees = () =>{
+    connection.querry("SELECT employee.id, first_name, last_name, title, salary, dept_name, manager_id FROM ((department JOIN job ON department.id = job.department_id) JOIN employee on job.id = employee.job_id);")
+}
+// stop for 04/28
+const displayMenu = () => {
+    inquirer.prompt({
+        message: "Make a choice.",
+        name: "menu",
+        type: "list",
+        choices: [
+            "All departments",
+            "All roles",
+            "All employees",
+            "Add a department",
+            "Add a role",
+            "Add an employee",
+            "Update employee roles",
+            "Quit",
+        ],
+    })
+    inquirer.then((response) =>{
+        switch (response.menu) {
+            case "All departments":
+                showDepartments()
+                break;
+            case "All roles":
+                showRoles()
+                break;
+            case "All employees":
+                showEmployees()
+                break;
+            case "Add a department":
+                generateDepartment()
+                break;
+            case "Add a role":
+                generateRole()
+                break;
+            case "Add an employee":
+                generateEmployee()
+                break;
+            case "Update employee roles":
+                updateEmployee()
+                break;
+            case "Quit":
+                connection.end()
+                break;
+            default:
+                connection.end()
+        }// switch end
+    })
+
+}// display menu end
