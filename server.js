@@ -52,6 +52,32 @@ const generateDepartment=()=>{
         )
     })
 }
+const generateRole = () =>{
+    inquirer.prompt([{
+        name: "jobTitle",
+        type: "input",
+        message: "What is the role?",
+    },
+    {
+        name: "salary",
+        type: "input",
+        message: "What is the current salary for this role?",
+    },
+    {
+        name: "deptId",
+        type: "input",
+        message: "what is the department ID?",
+    },])
+    inquirer.then((answer) => {
+        connection.query("INSERT INTO job (title, salary, department_id) VALUES (?, ?, ?)"),
+        [answer.jobTitle, answer.salary, answer.deptID],
+        (error, results) => {
+            if (error) throw error
+            console.log("Added role")
+            displayMenu()
+        }
+    })
+}
 const displayMenu = () => {
     inquirer.prompt({
         message: "Make a choice.",
