@@ -35,7 +35,23 @@ const showRoles = () =>{
 const showEmployees = () =>{
     connection.querry("SELECT employee.id, first_name, last_name, title, salary, dept_name, manager_id FROM ((department JOIN job ON department.id = job.department_id) JOIN employee on job.id = employee.job_id);")
 }
-// stop for 04/28
+const generateDepartment=()=>{
+    inquirer.prompt([{
+        name: "department",
+        type: "input",
+        message: "What department do you want?",
+    },])
+    inquirer.then((answer) => {
+        connection.querry("INSERT INTO department (dept_name) VALUES (?)",
+        [answer.department],
+        (error, results) => {
+            if (error) throw error
+            console.log("Added department")
+            displayMenu()
+        }
+        )
+    })
+}
 const displayMenu = () => {
     inquirer.prompt({
         message: "Make a choice.",
