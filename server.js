@@ -78,6 +78,30 @@ const generateRole = () =>{
         }
     })
 }
+const updateEmployee = () => {
+    inquirer.prompt([
+        {
+            name: "id",
+            type:"input",
+            message:"Enter your employee id",
+        },
+        {
+            name:"jobId",
+            Type: "input",
+            message: "Enter the new job id",
+        }
+    ])
+    inquirer.then(answer => {
+        connection.querry(
+            "UPDATE employee SET job_id=? WHERE id=?",
+            function (err, res) {
+                if (err) throw err
+                console.log("Updated employee")
+                displayMenu()
+            }
+        )
+    })
+}
 const displayMenu = () => {
     inquirer.prompt({
         message: "Make a choice.",
